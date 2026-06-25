@@ -1,5 +1,6 @@
 import { Award } from "lucide-react";
 
+import { Contact } from "@/components/Contact";
 import { EducationCard } from "@/components/EducationCard";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { Hero } from "@/components/Hero";
@@ -184,6 +185,8 @@ export default function Home() {
           </MotionDiv>
         </div>
       </section>
+
+      <Contact />
     </main>
   );
 }
