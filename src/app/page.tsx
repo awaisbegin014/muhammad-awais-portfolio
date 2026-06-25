@@ -3,6 +3,7 @@ import { Award } from "lucide-react";
 import { Contact } from "@/components/Contact";
 import { EducationCard } from "@/components/EducationCard";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
+import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { MotionDiv } from "@/components/Motion";
 import { Navbar } from "@/components/Navbar";
@@ -187,6 +188,7 @@ export default function Home() {
       </section>
 
       <Contact />
+      <Footer />
     </main>
   );
 }
