@@ -1,10 +1,14 @@
+import { Award } from "lucide-react";
+
+import { EducationCard } from "@/components/EducationCard";
+import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { Hero } from "@/components/Hero";
 import { MotionDiv } from "@/components/Motion";
 import { Navbar } from "@/components/Navbar";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionTitle } from "@/components/SectionTitle";
 import { SkillCard } from "@/components/SkillCard";
-import { owner, projects, skillGroups } from "@/data/portfolio";
+import { awards, education, experiences, owner, projects, skillGroups } from "@/data/portfolio";
 
 export default function Home() {
   return (
@@ -104,6 +108,79 @@ export default function Home() {
             {projects.map((project) => (
               <ProjectCard key={project.name} project={project} />
             ))}
+          </MotionDiv>
+        </div>
+      </section>
+
+      <section id="experience" className="px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle
+            eyebrow="Experience"
+            title="Leadership through platforms and workshops"
+            description="A timeline of technical leadership across university contests, developer societies, and data-driven event systems."
+          />
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55 }}
+          >
+            <ExperienceTimeline items={experiences} />
+          </MotionDiv>
+        </div>
+      </section>
+
+      <section id="education" className="px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle
+            eyebrow="Education"
+            title="Academic foundation"
+            description="Computer Science studies at FAST National University supported by a disciplined pre-university academic track."
+          />
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.55 }}
+            className="grid gap-5 md:grid-cols-3"
+          >
+            {education.map((item) => (
+              <EducationCard key={`${item.degree}-${item.years}`} item={item} />
+            ))}
+          </MotionDiv>
+        </div>
+      </section>
+
+      <section id="awards" className="px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle
+            eyebrow="Honors"
+            title="Recognition across coding and academics"
+            description="A concise record of awards reflecting competitive programming interest, rapid building, and academic discipline."
+          />
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.55 }}
+            className="grid gap-5 md:grid-cols-3"
+          >
+            {awards.map((award) => {
+              const Icon = award.icon ?? Award;
+
+              return (
+                <article
+                  key={award.title}
+                  className="rounded-[8px] border border-white/10 bg-white/[0.045] p-5 transition hover:-translate-y-1 hover:border-amber-300/30 hover:bg-white/[0.07]"
+                >
+                  <span className="grid size-11 place-items-center rounded-[8px] border border-amber-300/25 bg-amber-300/10 text-amber-100">
+                    <Icon className="size-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-5 text-lg font-semibold text-white">{award.title}</h3>
+                  <p className="mt-2 text-sm text-slate-300">{award.source}</p>
+                </article>
+              );
+            })}
           </MotionDiv>
         </div>
       </section>
