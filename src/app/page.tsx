@@ -2,7 +2,8 @@ import { Hero } from "@/components/Hero";
 import { MotionDiv } from "@/components/Motion";
 import { Navbar } from "@/components/Navbar";
 import { SectionTitle } from "@/components/SectionTitle";
-import { owner } from "@/data/portfolio";
+import { SkillCard } from "@/components/SkillCard";
+import { owner, skillGroups } from "@/data/portfolio";
 
 export default function Home() {
   return (
@@ -59,6 +60,27 @@ export default function Home() {
                   ))}
                 </ul>
               </article>
+            ))}
+          </MotionDiv>
+        </div>
+      </section>
+
+      <section id="skills" className="px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle
+            eyebrow="Skills"
+            title="A compact stack for modern web systems"
+            description="Core tools grouped for quick scanning, from language fundamentals to deployment and collaboration."
+          />
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.55 }}
+            className="grid gap-4 md:grid-cols-2 xl:grid-cols-5"
+          >
+            {skillGroups.map((group) => (
+              <SkillCard key={group.title} group={group} />
             ))}
           </MotionDiv>
         </div>
