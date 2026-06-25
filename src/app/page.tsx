@@ -1,9 +1,10 @@
 import { Hero } from "@/components/Hero";
 import { MotionDiv } from "@/components/Motion";
 import { Navbar } from "@/components/Navbar";
+import { ProjectCard } from "@/components/ProjectCard";
 import { SectionTitle } from "@/components/SectionTitle";
 import { SkillCard } from "@/components/SkillCard";
-import { owner, skillGroups } from "@/data/portfolio";
+import { owner, projects, skillGroups } from "@/data/portfolio";
 
 export default function Home() {
   return (
@@ -81,6 +82,27 @@ export default function Home() {
           >
             {skillGroups.map((group) => (
               <SkillCard key={group.title} group={group} />
+            ))}
+          </MotionDiv>
+        </div>
+      </section>
+
+      <section id="projects" className="px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle
+            eyebrow="Projects"
+            title="Featured builds with real workflows"
+            description="Project cards focus on deployed systems, user flows, and engineering choices instead of visual noise."
+          />
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55 }}
+            className="grid gap-5 lg:grid-cols-3"
+          >
+            {projects.map((project) => (
+              <ProjectCard key={project.name} project={project} />
             ))}
           </MotionDiv>
         </div>
