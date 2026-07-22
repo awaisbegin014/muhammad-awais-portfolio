@@ -169,6 +169,17 @@ export const experiences: Experience[] = [
 
 export const projects: Project[] = [
   {
+    name: "ApplyWise",
+    tech: [".NET 10", "ASP.NET Core MVC", "C#", "Entity Framework Core", "SQL Server", "Bootstrap 5"],
+    featured: true,
+    live: "https://applywise.runasp.net",
+    github: "https://github.com/codexbegin14/ApplyWise",
+    description: [
+      "Built a private job-search workspace that connects application tracking, resume versions, interviews, reminders, and performance analytics in one per-user dashboard.",
+      "Implemented explainable ATS and job-match scoring, best-resume recommendations, an A4 PDF resume builder, and rule-based job-post risk checks with secure identity and private file storage.",
+    ],
+  },
+  {
     name: "FORKED NUCES",
     tech: ["Next.js", "Python", "Django REST Framework", "PostgreSQL", "Redis", "Docker"],
     featured: true,
