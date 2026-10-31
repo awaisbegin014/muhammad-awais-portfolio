@@ -9,6 +9,7 @@
 /build
 
 # misc
+/tmp/
 .DS_Store
 *.pem
 
@@ -20,6 +21,7 @@ pnpm-debug.log*
 
 # local env files
 .env*
+!.env.example
 
 # vercel
 .vercel

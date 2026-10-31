@@ -4,7 +4,7 @@ A modern, responsive portfolio website for Muhammad Awais, a Computer Science st
 
 ## Overview
 
-This portfolio presents Muhammad Awais through a polished dark interface inspired by FAST NUCES colors: deep navy, soft gray, controlled cyan accents, and subtle gold highlights. The site is designed to feel professional, futuristic, readable, and easy to maintain.
+An editorial, single-page portfolio with warm paper, ink, and rust colors, larger typography, screen-sized desktop chapters, and responsive mobile layouts. Introduction, project screenshots, work, experience, background, and contact appear in one continuous page. Motion includes section reveals, a floating portrait, project transitions, and a reading-progress line, with reduced-motion support.
 
 ## Features
 
@@ -92,7 +92,43 @@ The project is ready for Vercel deployment.
 npm run build
 ```
 
-## Portfolio Data
+## Portfolio design and walkthroughs
+
+The homepage uses a warm paper, ink, and rust palette with an editorial layout. The active implementation is in `src/components/Portfolio.tsx`, with interactive project walkthroughs in `src/components/ProjectDemo.tsx` and responsive styles in `src/app/globals.css`.
+
+The Interface views use the owner's supplied screenshots of FORKED NUCES, ApplyWise, and Guilty by Data, stored in `public/projects/`. Screenshots keep their full aspect ratio and can be opened at full size. Each project also links to its live product or source repository. The interactive “Under the hood” controls explain the documented technology and workflows.
+
+The portfolio supports keyboard navigation, reduced motion preferences, responsive mobile navigation, expandable experience details, and email copying. The résumé is served from `public/resume.pdf`.
+
+## Page sections
+
+- `/#home`: introduction and links to work and contact
+- `/#work`: switch between project screenshots and interactive system overviews
+- `/#experience`: professional roles and community leadership
+- `/#about`: background and technical skills
+- `/#education`: dedicated academic background and honors section
+- `/#contact`: contact form, email, phone, and social links
+
+Navigation scrolls to each section and highlights the section currently in view. Project screenshots and the project switcher appear in the Work section. Older `/work`, `/experience`, `/about`, and `/contact` URLs redirect to their section anchors.
+
+The main page components are in `src/components/Portfolio.tsx`. Typography and screen-layout refinements are in `src/app/refinements.css`.
+
+## Email delivery
+
+The contact form works immediately through an explicitly labeled email-draft mode: the visitor completes the fields and sends the prepared message in their own email app. Draft creation does not claim the message was sent.
+
+For direct server-side email delivery:
+
+1. Copy `.env.example` to `.env.local`.
+2. Set `RESEND_API_KEY` to your own Resend API key.
+3. Set `CONTACT_FROM_EMAIL` to a sender address on a verified domain in your Resend account.
+4. Restart the development server. For deployment, add the same variables to your hosting environment.
+
+The form detects readiness through `GET /api/contact` and switches to direct sending automatically. The API only sends to `awaisshaikhcs786@gmail.com`, uses the visitor's address for replies, validates inputs, limits message length, rejects cross-origin browser submissions and honeypot values, and applies best-effort in-memory throttling per server instance. For larger traffic, use a shared distributed rate limiter. Credentials stay on the server.
+
+The provider request follows the [Resend send-email API](https://resend.com/docs/api-reference/emails/send-email). Without configured credentials, direct delivery returns an explicit unavailable response. Delivery errors preserve the form and offer an email-draft fallback.
+
+### Editing content
 
 All portfolio content is stored in:
 

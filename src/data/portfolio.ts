@@ -1,4 +1,5 @@
 import {
+  BrainCircuit,
   Award,
   BookOpen,
   Code2,
@@ -62,11 +63,11 @@ export const owner = {
   phone: "+92-327-2726270",
   linkedin: "https://linkedin.com/in/muhammad-awais",
   github: "https://github.com/codexbegin14",
-  headline: "Computer Science Student & Full-Stack Developer",
+  headline: "Full-Stack Web Developer",
   summary:
-    "Computer Science junior with a strong grasp of modern web technologies, passionate about writing clean, efficient code that solves real-world problems. Experienced in building web applications and continuously learning to improve system design and development practices.",
+    "Full-stack developer and final-year Computer Science student experienced in client websites, internal business systems, and multi-tenant applications. Delivered five full-stack client websites and built an internal CRM end to end. Combines React and Next.js, Node.js, and Django development with AI/ML skills and recommendation-system experience.",
   heroLine:
-    "Computer Science junior with a strong grasp of modern web technologies, passionate about writing clean, efficient code that solves real-world problems. Experienced in building web applications and continuously learning to improve system design and development practices",
+    "I build client websites, internal business systems, and multi-tenant applications across the full stack - from polished React and Next.js interfaces to Node.js and Django APIs, databases, deployment, and AI-powered features.",
 };
 
 export const navItems: NavItem[] = [
@@ -120,12 +121,12 @@ export const skillGroups: SkillGroup[] = [
   {
     title: "Frontend",
     icon: Globe2,
-    skills: ["React.js", "Next.js", "Tailwind CSS", "Framer Motion", "Figma"],
+    skills: ["React.js", "Next.js", "Tailwind CSS", "Framer Motion"],
   },
   {
     title: "Backend",
     icon: Server,
-    skills: ["Node.js", "Express.js", "Django REST Framework", ".NET Framework", "Supabase", "Redis"],
+    skills: ["Node.js", "Express.js", "Django REST Framework", "ASP.NET Core", "REST APIs"],
   },
   {
     title: "Databases",
@@ -133,13 +134,46 @@ export const skillGroups: SkillGroup[] = [
     skills: ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Supabase"],
   },
   {
+    title: "AI / Machine Learning",
+    icon: BrainCircuit,
+    skills: ["LLM Fine-tuning", "Deep Learning", "Recommender Systems", "Pandas", "Scikit-learn"],
+  },
+  {
     title: "Tools",
     icon: TerminalSquare,
-    skills: ["Git", "GitHub Actions", "Linux Debian", "Docker", "Bash Scripting", "Vercel"],
+    skills: ["Git", "GitHub Actions", "Docker", "Linux", "Vercel", "Render", "WordPress"],
   },
 ];
 
 export const experiences: Experience[] = [
+  {
+    role: "Full-Stack Developer (Full-Time)",
+    organization: "Yellow Solutions",
+    date: "Jul 2026 - Present",
+    highlights: [
+      "Built an internal CRM end to end, implementing the frontend and backend for in-house project management and data tracking.",
+      "Delivered five full-stack client websites and currently work on five client projects, developing features and tailoring functionality to client requirements.",
+      "Maintained and enhanced Yellow Tools, Yellow Agency, and yellowsolutions.pk, and contributed to a learning management system.",
+    ],
+  },
+  {
+    role: "Developer Intern (Remote)",
+    organization: "Auton8",
+    date: "Aug 2026 - Sep 2026",
+    highlights: [
+      "Developed frontend and backend features for an internal workflow-recording application that captures and saves step-by-step actions for automated testing.",
+      "Built reusable Next.js components and Node.js/Express REST APIs to store and retrieve workflow data in MongoDB.",
+    ],
+  },
+  {
+    role: "Full-Stack Developer (Contract)",
+    organization: "BoxTech - Dubai, UAE (Remote)",
+    date: "Apr 2026 - Jun 2026",
+    highlights: [
+      "Developed a multi-tenant truck-tracking system with isolated data access and tenant-specific workflows for multiple client organizations.",
+      "Designed PostgreSQL schemas and REST APIs for fleet tracking and reporting, and built an AI chatbot backend with conversation management, message storage, and API integrations.",
+    ],
+  },
   {
     role: "Head",
     organization: "Guilty by Data - FAST NUCES",
@@ -181,13 +215,13 @@ export const projects: Project[] = [
   },
   {
     name: "FORKED NUCES",
-    tech: ["Next.js", "Python", "Django REST Framework", "PostgreSQL", "Redis", "Docker"],
+    tech: ["Next.js", "Django REST Framework", "PostgreSQL", "Redis", "Docker"],
     featured: true,
     live: "https://forked-nuces.vercel.app",
     github: "https://github.com/codexbegin14/FORKED-NUCES",
     description: [
-      "Developed a community-driven platform for FAST-NUCES students enabling NU-domain verified users to open-source their projects within the university and collaborate across batches.",
-      "Enabled students to complete stalled projects by connecting them with skill-matched collaborators.",
+      "Built the platform end to end for FAST-NUCES students to register, publish projects, and raise issues for open-source contributions.",
+      "Enabled students to browse project issues, contribute solutions, and collaborate on resolving them.",
     ],
   },
   {
@@ -195,8 +229,8 @@ export const projects: Project[] = [
     tech: ["Python", "Pandas", "Scikit-learn", "Streamlit"],
     github: "https://github.com/codexbegin14/Investment-Recommendation-System",
     description: [
-      "Developed a recommendation system that suggests stocks and funds to invest in based on user preferences using content-based and user-based filtering techniques.",
-      "Integrated financial datasets and built portfolio recommendations with interactive visualizations for investment insights.",
+      "Combined collaborative SVD, content-based, and demographic and risk filtering to personalize stock and fund recommendations.",
+      "Integrated weighted scoring and an interactive Streamlit interface to rank investments based on user profiles and preferences.",
     ],
   },
   {
@@ -205,8 +239,8 @@ export const projects: Project[] = [
     featured: true,
     live: "https://guilty-by-data.vercel.app/",
     description: [
-      "Built a full-stack investigative competition platform with participant login, three structured rounds, timed challenges, round-wise progression, and leaderboard tracking.",
-      "Developed an admin dashboard for inserting questions and managing contest content, paired with an immersive investigative interface for a mystery-solving experience.",
+      "Designed data-analysis questions and built the competition platform for participants to access challenges and submit solutions.",
+      "Implemented scoring, participant leaderboards, and an admin dashboard to manage questions and competition content.",
     ],
   },
 ];
@@ -214,8 +248,8 @@ export const projects: Project[] = [
 export const education: Education[] = [
   {
     degree: "B.S. Computer Science",
-    institute: "FAST National University",
-    years: "2023 - 2027",
+    institute: "FAST-NUCES, Karachi",
+    years: "2023 - 2027 (Expected)",
     score: "CGPA: 3.12 / 4.00",
   },
   {

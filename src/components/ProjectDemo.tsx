@@ -1,0 +1,39 @@
+"use client";
+
+import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, ChevronRight, Code2, FileText, FolderGit2, GitPullRequest, LayoutDashboard, Plus, Target, Trophy } from "lucide-react";
+import { useState } from "react";
+
+const issues = [
+  { title: "Make the project search more useful", project: "Campus Projects", type: "Frontend", color: "green", text: "Add a technology filter so contributors can find projects that match their stack.", tags: ["Next.js", "good first issue"] },
+  { title: "Add pagination to the issues API", project: "Open Campus", type: "Backend", color: "orange", text: "Return open issues in pages so the project browser can load results incrementally.", tags: ["Django", "help wanted"] },
+  { title: "Improve the contribution guide", project: "Student Toolkit", type: "Frontend", color: "blue", text: "Help first-time contributors get from cloning the repository to running it locally.", tags: ["Docs", "good first issue"] },
+];
+
+function ForkedDemo() {
+  const [filter, setFilter] = useState("All issues");
+  const [selected, setSelected] = useState<(typeof issues)[number] | null>(null);
+  return <div className="demo-app forked-demo">
+    <div className="demo-app-top"><span className="forked-logo"><GitPullRequest size={13} />forked<span>nuces</span></span><span className="demo-user">NU</span></div>
+    <div className="demo-app-body"><aside className="demo-sidebar"><span className="demo-sidebar-label">WORKSPACE</span><span><LayoutDashboard size={10} />Overview</span><span><FolderGit2 size={10} />Projects</span><span className="selected"><GitPullRequest size={10} />Open issues</span><div className="sidebar-bottom">Built together.<br />One commit at a time.</div></aside><div className="demo-content">
+      {selected ? <><button className="demo-back" onClick={() => setSelected(null)}><ArrowLeft size={10} /> Back to issues</button><span className="demo-kicker">{selected.project} / OPEN ISSUE</span><h4>{selected.title}</h4><p className="demo-issue-text">{selected.text}</p><div className="demo-tags">{selected.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="demo-contribution-note"><Code2 size={17} /><p>A small place to start.<br /><span>Find an issue. Understand the project. Make a contribution.</span></p></div><a className="demo-cta" href="https://forked-nuces.vercel.app" target="_blank" rel="noreferrer">Explore FORKED NUCES <ArrowUpRight size={10} /></a></> : <><span className="demo-kicker">THE NEXT COMMIT COULD BE YOURS</span><h4>Find your next contribution<span>.</span></h4><p className="demo-subtitle">Good ideas get better with more hands.</p><div className="demo-filters" role="group" aria-label="Filter sample issues">{["All issues", "Frontend", "Backend"].map(item => <button key={item} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>)}</div><div className="demo-issues">{issues.filter(issue => filter === "All issues" || issue.type === filter).map(issue => <button key={issue.title} onClick={() => setSelected(issue)}><span className={`issue-dot ${issue.color}`} /><div><span className="issue-project">{issue.project}</span><strong>{issue.title}</strong><span className="demo-tags">{issue.tags.map(tag => <span key={tag}>{tag}</span>)}</span></div><ChevronRight size={10} /></button>)}</div></>}
+    </div></div>
+  </div>;
+}
+
+const stages = ["Saved", "Applied", "Interview"];
+
+function ApplywiseDemo() {
+  const [stage, setStage] = useState(0);
+  const [showNote, setShowNote] = useState(false);
+  return <div className="demo-app applywise-demo"><div className="demo-app-top"><span className="applywise-logo"><span className="applywise-symbol">a</span>ApplyWise</span><span className="demo-mini-status"><span />Your private workspace</span></div><div className="applywise-content"><div className="applywise-heading"><div><span className="demo-kicker">ONE PLACE FOR YOUR NEXT STEP</span><h4>A little more organized.</h4></div><Target size={24} /></div><div className="applywise-summary"><div><span>YOUR WORKSPACE</span><strong>Applications</strong></div><div><span>DOCUMENTS</span><strong>Résumés & versions</strong></div><div><span>COMING UP</span><strong>Interviews & reminders</strong></div></div><div className="demo-board" aria-label="Sample application board">{stages.map((name, index) => <div className="demo-column" key={name}><div className="demo-column-heading"><span className={`stage-dot stage-${index}`} />{name}<span>{stage === index ? "1" : "0"}</span></div>{stage === index ? <div className="demo-application"><span className="sample-company">SAMPLE APPLICATION</span><strong>Full-stack developer</strong><span className="application-subtitle">A role worth keeping track of.</span><div className="application-document"><FileText size={10} />Resume-v2.pdf</div><button onClick={() => setStage(index < 2 ? index + 1 : 0)}>{index < 2 ? `Move to ${stages[index + 1].toLowerCase()}` : "Start again"}<ArrowRight size={10} /></button></div> : <div className="empty-column">{index === 2 ? "Your next conversation." : "Room for the next opportunity."}</div>}</div>)}</div><div className="demo-board-footer"><span><CheckCircle2 size={10} />Try moving the sample application.</span><button aria-expanded={showNote} onClick={() => setShowNote(!showNote)}>{showNote ? "Hide note" : "Why one workspace?"}<Plus size={10} /></button></div>{showNote && <p className="demo-note">Keep the application, the résumé you sent, and the next reminder together.</p>}</div></div>;
+}
+
+function GuiltyDemo() {
+  const [tab, setTab] = useState("Case file");
+  const [evidence, setEvidence] = useState(false);
+  return <div className="demo-app guilty-demo"><div className="demo-app-top"><span className="guilty-logo">G<span className="rust">/</span>D <span>GUILTY BY DATA</span></span><span className="guilty-status">SAMPLE CASE / 001</span></div><div className="guilty-nav" role="group" aria-label="Sample competition view">{["Case file", "Leaderboard"].map(item => <button key={item} aria-pressed={tab === item} onClick={() => setTab(item)}>{item === "Case file" ? <FolderGit2 size={10} /> : <Trophy size={10} />}{item}</button>)}</div><div className="guilty-content">{tab === "Case file" ? <><span className="guilty-eyebrow">FOLLOW THE NUMBERS. FIND THE STORY.</span><h4>Something doesn’t<br />add up.</h4><p className="guilty-description">One unusual spike. A dataset full of clues.<br />Can you spot where the pattern changes?</p><div className="evidence-chart" aria-label="Illustrative event data with an unusual spike at event six">{[25, 37, 32, 45, 38, 94, 41, 35, 30, 42, 36, 32].map((height, index) => <span key={index} style={{ height: `${height}%` }} className={index === 5 && evidence ? "evidence-active" : ""}>{index === 5 && evidence && <i>ANOMALY</i>}</span>)}</div><div className="guilty-evidence-footer"><span>ILLUSTRATIVE EVENT DATA</span><button onClick={() => setEvidence(!evidence)}>{evidence ? "Hide clue" : "Inspect the evidence"}<ArrowUpRight size={10} /></button></div></> : <><span className="guilty-eyebrow">EVERY SOLUTION COUNTS</span><h4>The leaderboard.</h4><p className="guilty-description">A sample view of the competition standings.</p><div className="sample-leaderboard">{[["01", "The Outliers", "850"], ["02", "Null Hypothesis", "720"], ["03", "Data Detectives", "640"]].map(([rank, name, score]) => <div key={rank}><span>{rank}</span><strong>{name}</strong><span>{score} pts</span></div>)}</div><span className="guilty-eyebrow">ILLUSTRATIVE TEAMS & SCORES</span></>}</div></div>;
+}
+
+export function ProjectDemo({ kind }: { kind: string }) {
+  return <div className="project-demo"><div className="demo-label"><span className="demo-label-dot" />INTERACTIVE WALKTHROUGH<span>SAMPLE CONTENT</span></div>{kind === "forked" ? <ForkedDemo /> : kind === "applywise" ? <ApplywiseDemo /> : <GuiltyDemo />}</div>;
+}
