@@ -18,7 +18,7 @@ section, footer[id] { scroll-margin-top: var(--nav-height); }
 .eyebrow { font-size: 12px; }
 .reading-progress { position: fixed; z-index: 100; top: 0; left: 0; right: 0; height: 3px; background: var(--rust); transform-origin: 0 50%; pointer-events: none; }
 .hero { min-height: calc(100svh - var(--nav-height)); display: flex; flex-direction: column; padding-top: 28px; }
-.hero-main { flex: 1; padding-block: 36px; }
+.hero-main { flex: 1; padding-block: 36px; grid-template-columns: minmax(0,1fr) clamp(260px,26vw,380px); gap: clamp(32px,5vw,70px); }
 .hero-projects { border-top: 1px solid var(--line); padding-block: 20px 23px; }
 .hero-projects-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 15px; }
 .hero-projects-heading>.eyebrow { font-size: 10px; color: var(--rust); }
@@ -33,13 +33,17 @@ section, footer[id] { scroll-margin-top: var(--nav-height); }
 .hero-project-link strong { display: block; margin-top: 5px; font-size: 14px; font-weight: 500; letter-spacing: -.025em; }
 .hero-project-link>svg { color: var(--rust); transition: transform .2s; }
 .hero-project-link:hover>svg { transform: translate(2px,-2px); }
-.hero h1 { font-size: clamp(76px, 8.1vw, 124px); }
+.hero h1 { font-size: clamp(64px,6.2vw,94px); }
 .hero-description { font-size: 18px; max-width: 510px; line-height: 1.8; margin-top: 26px; }
 .hero-actions .button, .hero-actions .text-link { font-size: 15px; }
 .hero-bottom { font-size: 13px; padding-block: 20px; }
 .location { font-size: 12px; }
 .scroll-note { font-size: 10px; }
 .portrait-caption { font-size: 15px; }
+.hero-aside { display: flex; flex-direction: column; align-items: center; }
+.hero-aside .portrait-wrap { width: calc(100% - 24px); aspect-ratio: 1; padding: 6px; border-radius: 50%; background: #e6ded2; overflow: hidden; transform: none; align-self: center; flex-shrink: 0; box-shadow: 0 10px 28px #2427200c; }
+.hero-aside .hero-portrait { display: block; width: 100%; height: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: center; filter: none; }
+.hero-aside .currently { width: 100%; margin-top: 28px; text-align: center; }
 .currently>.eyebrow { font-size: 10px; }
 .currently p { font-size: 14px; }
 .screen-panel { min-height: calc(100svh - var(--nav-height)); padding-block: 56px; display: grid; align-content: center; }
@@ -218,7 +222,7 @@ section, footer[id] { scroll-margin-top: var(--nav-height); }
   .hero-project-link strong { font-size: 12px; }
   .hero-project-link>div>span { font-size: 7px; }
   .contact-section>.page-width { width: calc(100% - 72px); }
-  .hero h1 { font-size: 86px; }
+  .hero h1 { font-size: clamp(64px,6.8vw,76px); }
   .hero-description { font-size: 17px; }
   .project-story { gap: 30px; grid-template-columns: .9fr 1.25fr; }
   .project-text h3 { font-size: 30px; }
@@ -251,7 +255,8 @@ section, footer[id] { scroll-margin-top: var(--nav-height); }
   .nav-name { font-size: 14px; }
   .resume-link { font-size: 12px; }
   .hero-kicker>.eyebrow { font-size: 10px; }
-  .hero h1 { font-size: 70px; }
+  .hero-main { grid-template-columns: minmax(0,1fr) clamp(190px,28vw,230px); gap: 30px; }
+  .hero h1 { font-size: clamp(52px,7.6vw,64px); }
   .hero-description { font-size: 16px; }
   .hero-actions .button, .hero-actions .text-link { font-size: 13px; }
   .currently p { font-size: 12px; }
@@ -305,7 +310,10 @@ section, footer[id] { scroll-margin-top: var(--nav-height); }
   .contact-section>.page-width { width: calc(100% - 40px); }
   .hero { min-height: calc(100svh - var(--nav-height)); padding-top: 22px; }
   .hero-main { padding-block: 35px; gap: 38px; justify-content: center; }
-  .hero h1 { font-size: clamp(52px,13.7vw,77px); }
+  .hero h1 { font-size: clamp(44px,11.5vw,64px); }
+  .hero-aside { display: grid; grid-template-columns: clamp(116px,34vw,144px) minmax(0,1fr); align-items: center; column-gap: 20px; row-gap: 0; }
+  .hero-aside .portrait-wrap { width: calc(100% - 6px); grid-column: 1; grid-row: 1; }
+  .hero-aside .currently { grid-column: 2; grid-row: 1; align-self: center; margin-top: 0; text-align: left; }
   .hero-kicker { gap: 10px; }
   .hero-kicker>.eyebrow { font-size: 8px; max-width: 185px; }
   .location { font-size: 10px; }
@@ -464,6 +472,38 @@ section, footer[id] { scroll-margin-top: var(--nav-height); }
   .background-grid { margin-top: 36px; }
   .currently { margin-top: 0; }
   .system-explanation { padding: 14px; }
+}
+
+.skills-section { background: #eeeee5; padding-block: 88px; }
+.skills-section .section-heading { margin-bottom: 48px; }
+.skills-groups { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 44px 48px; }
+.skills-group { min-width: 0; }
+.skills-group h3 { display: flex; align-items: center; gap: 12px; font-size: 22px; line-height: 1.4; letter-spacing: -.035em; }
+.skills-group h3>svg { color: var(--rust); }
+.skills-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 18px 0 0; }
+.skills-list li { padding: 8px 11px; border-radius: 6px; background: var(--paper); color: #53594c; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+@media (max-width: 1100px) {
+  .skills-groups { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 36px 36px; }
+}
+@media (max-width: 900px) {
+  .desktop-nav { display: none; }
+  .mobile-menu { display: block; }
+  .site-nav { gap: 18px; }
+  .resume-link { margin-left: auto; margin-right: 10px; }
+  .mobile-navigation { display: flex; flex-direction: column; padding: 12px 24px 20px; }
+  .mobile-navigation a { display: flex; align-items: center; justify-content: space-between; padding-block: 13px; font-size: 16px; }
+}
+@media (max-width: 800px) {
+  .skills-section { padding-block: 72px; }
+  .skills-group h3 { font-size: 21px; }
+}
+@media (max-width: 560px) {
+  .skills-section { padding-block: 64px; }
+  .skills-section .section-heading { margin-bottom: 36px; }
+  .skills-groups { grid-template-columns: 1fr; gap: 34px; }
+  .skills-group h3 { font-size: 22px; }
+  .skills-list { margin-top: 15px; }
+  .skills-list li { font-size: 16px; padding: 8px 11px; }
 }
 
 .education-section { background: var(--paper); padding-block: 88px; }

@@ -2,6 +2,7 @@ import { ArrowUpRight, Send } from "lucide-react";
 import Link from "next/link";
 
 import { contactLinks, owner } from "@/data/portfolio";
+import { gmailComposeUrl } from "@/lib/email";
 
 export function Contact() {
   return (
@@ -17,7 +18,9 @@ export function Contact() {
             projects that need clean execution.
           </p>
           <Link
-            href={`mailto:${owner.email}`}
+            href={gmailComposeUrl({ to: owner.email })}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-7 inline-flex items-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
           >
             Send Email

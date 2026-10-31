@@ -51,7 +51,7 @@ export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.CONTACT_FROM_EMAIL;
   if (!apiKey || !from) {
-    return NextResponse.json({ error: "Direct delivery is unavailable. Please use the email draft option." }, { status: 503 });
+    return NextResponse.json({ error: "Direct delivery is unavailable. Please continue in Gmail instead." }, { status: 503 });
   }
 
   // Best-effort per-instance throttling. A distributed limiter can be added for high traffic.
@@ -82,10 +82,10 @@ export async function POST(request: Request) {
     });
     const result = await response.json();
     if (!response.ok || typeof result.id !== "string") {
-      return NextResponse.json({ error: "Your message could not be sent. Try again or use the email draft option." }, { status: 502 });
+      return NextResponse.json({ error: "Your message could not be sent. Try again or continue in Gmail instead." }, { status: 502 });
     }
     return NextResponse.json({ sent: true });
   } catch {
-    return NextResponse.json({ error: "Email delivery is temporarily unavailable. Please use the email draft option." }, { status: 502 });
+    return NextResponse.json({ error: "Email delivery is temporarily unavailable. Please continue in Gmail instead." }, { status: 502 });
   }
 }

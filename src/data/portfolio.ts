@@ -14,6 +14,7 @@ import {
   TerminalSquare,
   type LucideIcon,
 } from "lucide-react";
+import { gmailComposeUrl } from "@/lib/email";
 
 export type NavItem = {
   label: string;
@@ -83,7 +84,7 @@ export const contactLinks: ContactLink[] = [
   {
     label: "Email",
     value: owner.email,
-    href: `mailto:${owner.email}`,
+    href: gmailComposeUrl({ to: owner.email }),
     icon: Mail,
   },
   {

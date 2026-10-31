@@ -105,7 +105,8 @@ The portfolio supports keyboard navigation, reduced motion preferences, responsi
 - `/#home`: introduction and links to work and contact
 - `/#work`: switch between project screenshots and interactive system overviews
 - `/#experience`: professional roles and community leadership
-- `/#about`: background and technical skills
+- `/#about`: personal background
+- `/#skills`: dedicated skills and technologies section with six readable groups
 - `/#education`: dedicated academic background and honors section
 - `/#contact`: contact form, email, phone, and social links
 
@@ -115,7 +116,7 @@ The main page components are in `src/components/Portfolio.tsx`. Typography and s
 
 ## Email delivery
 
-The contact form works immediately through an explicitly labeled email-draft mode: the visitor completes the fields and sends the prepared message in their own email app. Draft creation does not claim the message was sent.
+Without server credentials, the contact form uses Gmail on the web. The visitor completes the fields and chooses **Continue in Gmail**, which opens a new tab with the recipient, subject, name, email, and message filled in. The visitor reviews the message and clicks **Send** in Gmail; Gmail may ask them to sign in first. This does not invoke Outlook or the device's default email app. Opening Gmail does not claim the email was sent. A visible compose link remains available if the browser blocks the new tab.
 
 For direct server-side email delivery:
 
@@ -126,7 +127,7 @@ For direct server-side email delivery:
 
 The form detects readiness through `GET /api/contact` and switches to direct sending automatically. The API only sends to `awaisshaikhcs786@gmail.com`, uses the visitor's address for replies, validates inputs, limits message length, rejects cross-origin browser submissions and honeypot values, and applies best-effort in-memory throttling per server instance. For larger traffic, use a shared distributed rate limiter. Credentials stay on the server.
 
-The provider request follows the [Resend send-email API](https://resend.com/docs/api-reference/emails/send-email). Without configured credentials, direct delivery returns an explicit unavailable response. Delivery errors preserve the form and offer an email-draft fallback.
+The provider request follows the [Resend send-email API](https://resend.com/docs/api-reference/emails/send-email). Without configured credentials, direct delivery returns an explicit unavailable response. Delivery errors preserve the form and offer a prefilled Gmail compose link. All portfolio email links open Gmail explicitly. They use a shared URL builder in `src/lib/email.ts` so special characters and line breaks are encoded correctly.
 
 ### Editing content
 

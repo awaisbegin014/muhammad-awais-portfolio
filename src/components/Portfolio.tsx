@@ -5,6 +5,7 @@ import { ArrowDownRight, ArrowRight, ArrowUpRight, Check, Copy, Github, Graduati
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, MotionConfig, useScroll, useSpring } from "framer-motion";
 import { useMotionPreference } from "@/hooks/useMotionPreference";
+import { gmailComposeUrl } from "@/lib/email";
 import { awards, education, experiences, owner, projects, skillGroups, type Project } from "@/data/portfolio";
 import { ContactForm } from "./ContactForm";
 import forkedScreenshot from "../../public/projects/forked.png";
@@ -75,12 +76,12 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
 function Navigation() {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const navigation = [["Home", "home"], ["Work", "work"], ["Experience", "experience"], ["About", "about"], ["Education", "education"], ["Contact", "contact"]];
+  const navigation = [["Home", "home"], ["Work", "work"], ["Experience", "experience"], ["About", "about"], ["Skills", "skills"], ["Education", "education"], ["Contact", "contact"]];
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       for (const entry of entries) if (entry.isIntersecting) setActiveSection(entry.target.id);
     }, { rootMargin: "-15% 0px -65% 0px", threshold: 0 });
-    for (const id of ["home", "work", "experience", "about", "education", "contact"]) {
+    for (const id of ["home", "work", "experience", "about", "skills", "education", "contact"]) {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     }
@@ -117,7 +118,7 @@ function Hero() {
         <div className="hero-actions"><a href="#work" className="button button-dark">Explore my work <ArrowDownRight size={19} /></a><a href="#contact" className="text-link">Let’s talk <ArrowUpRight size={17} /></a></div>
       </div>
       <div className="hero-aside">
-        <motion.div className="portrait-wrap" animate={reduceMotion ? {} : { y: [0, -8, 0], rotate: [3, 1.5, 3] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} whileHover={reduceMotion ? {} : { scale: 1.025 }}><div className="portrait-tape" /><Image className="hero-portrait" src="/profile.jpg" width={400} height={400} priority alt="Muhammad Awais" /></motion.div>
+        <motion.div className="portrait-wrap" animate={reduceMotion ? {} : { y: [0, -8, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} whileHover={reduceMotion ? {} : { scale: 1.025 }}><Image className="hero-portrait" src="/profile.jpg" width={400} height={400} priority alt="Muhammad Awais" /></motion.div>
         <div className="currently"><span className="eyebrow">CURRENTLY</span><p>Building at <a href="#experience">Yellow Solutions <ArrowUpRight size={13} /></a><br /><span>Final-year CS @ FAST–NUCES</span></p></div>
       </div>
     </div>
@@ -174,14 +175,28 @@ function ExperienceSection() {
 function About() {
   return <section id="about" className="about-section"><div className="about-intro-section screen-panel page-width"><Reveal>
     <div className="about-top"><div><span className="eyebrow section-label">03 / ABOUT</span><h2 className="page-heading">A little<br /><em>background.</em></h2></div><div className="about-copy"><p>I’m finishing my Computer Science degree at FAST–NUCES in Karachi, with graduation expected in 2027.</p><p>Alongside development work, I’ve designed data-analysis challenges, organized student competitions, and led Git and GitHub workshops. Building for those events meant thinking about participants, organizers, and the workflows connecting them.</p><a href="/resume.pdf" target="_blank" rel="noreferrer" className="text-link">View résumé <ArrowUpRight size={17} /></a></div></div>
-    </Reveal></div><div className="background-section screen-panel page-width"><Reveal><div className="toolbox"><div className="toolbox-heading"><span className="eyebrow">THE TOOLBOX</span><p>Different problems.<br />The right tools.</p></div><div className="toolbox-groups">{skillGroups.map(group => <div className="toolbox-group" key={group.title}><h3>{group.title}</h3><p>{group.skills.join(" · ")}</p></div>)}</div></div>
-  </Reveal></div></section>;
+    </Reveal></div></section>;
+}
+
+function SkillsSection() {
+  return <section id="skills" className="skills-section" aria-labelledby="skills-heading">
+    <div className="page-width">
+      <Reveal className="section-heading"><div><span className="eyebrow section-label">04 / SKILLS</span><h2 id="skills-heading">Skills &<br /><em>technologies.</em></h2></div></Reveal>
+      <Reveal className="skills-groups">{skillGroups.map(group => {
+        const Icon = group.icon;
+        return <article className="skills-group" key={group.title} aria-label={group.title}>
+          <h3><Icon size={22} aria-hidden="true" />{group.title}</h3>
+          <ul className="skills-list">{group.skills.map(skill => <li key={skill}>{skill}</li>)}</ul>
+        </article>;
+      })}</Reveal>
+    </div>
+  </section>;
 }
 
 function EducationAndHonors() {
   return <section id="education" className="education-section" aria-labelledby="education-heading">
     <div className="page-width">
-      <Reveal className="section-heading"><div><span className="eyebrow section-label">04 / EDUCATION & HONORS</span><h2 id="education-heading">Education &<br /><em>recognition.</em></h2></div></Reveal>
+      <Reveal className="section-heading"><div><span className="eyebrow section-label">05 / EDUCATION & HONORS</span><h2 id="education-heading">Education &<br /><em>recognition.</em></h2></div></Reveal>
       <Reveal className="education-layout">
         <div className="academic-column"><h3 className="education-column-heading"><GraduationCap size={21} />Academic background</h3><div className="academic-entries">{education.map((item, index) => <article className="academic-entry" key={item.degree}><span className="academic-number">0{index + 1}</span><div><h4>{item.degree}</h4><p>{item.institute}</p><div className="academic-meta"><span>{item.years}</span><span className="academic-result">{item.score}</span></div></div></article>)}</div></div>
         <div className="honors-column"><h3 className="education-column-heading">Honors & awards</h3><div className="honor-entries">{awards.map(award => { const Icon = award.icon; return <article className="honor-entry" key={award.title}><span className="honor-icon"><Icon size={20} aria-hidden="true" /></span><div><h4>{award.title}</h4><p>{award.source}</p></div></article>; })}</div></div>
@@ -200,12 +215,12 @@ function Contact() {
       setCopied(true);
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2200);
-    } catch { window.location.href = `mailto:${owner.email}`; }
+    } catch { window.open(gmailComposeUrl({ to: owner.email }), "_blank", "noopener,noreferrer"); }
   }
   return <section id="contact" className="contact-section"><div className="page-width">
-    <div className="contact-top"><span className="eyebrow section-label">05 / CONTACT</span></div>
-    <Reveal className="contact-layout"><div><h2><a className="contact-headline" href={`mailto:${owner.email}`}>Have something<br />in <em>mind?</em><ArrowUpRight aria-hidden="true" /></a></h2><p className="contact-invitation">Tell me about your project or the role you’re hiring for.</p></div><ContactForm /></Reveal>
-    <div className="contact-bottom"><div className="email-group"><a href={`mailto:${owner.email}`}>{owner.email}</a><button onClick={copyEmail} aria-label={copied ? "Email copied" : "Copy email address"}>{copied ? <Check size={17} /> : <Copy size={17} />}</button><span role="status" className="copy-status">{copied ? "Copied!" : ""}</span></div><div className="social-links"><a href={owner.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a><a href={owner.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={15} /></a><a href="tel:+923272726270">Call <ArrowUpRight size={15} /></a></div></div>
+    <div className="contact-top"><span className="eyebrow section-label">06 / CONTACT</span></div>
+    <Reveal className="contact-layout"><div><h2><a className="contact-headline" href={gmailComposeUrl({ to: owner.email })} target="_blank" rel="noopener noreferrer">Have something<br />in <em>mind?</em><ArrowUpRight aria-hidden="true" /></a></h2><p className="contact-invitation">Tell me about your project or the role you’re hiring for.</p></div><ContactForm /></Reveal>
+    <div className="contact-bottom"><div className="email-group"><a href={gmailComposeUrl({ to: owner.email })} target="_blank" rel="noopener noreferrer" aria-label={`Email ${owner.email} using Gmail`}>{owner.email}</a><button onClick={copyEmail} aria-label={copied ? "Email copied" : "Copy email address"}>{copied ? <Check size={17} /> : <Copy size={17} />}</button><span role="status" className="copy-status">{copied ? "Copied!" : ""}</span></div><div className="social-links"><a href={owner.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a><a href={owner.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={15} /></a><a href="tel:+923272726270">Call <ArrowUpRight size={15} /></a></div></div>
     <div className="footer-baseline"><span>© {new Date().getFullYear()} Muhammad Awais</span><a href="#main-content">BACK TO TOP <ArrowUpRight size={13} /></a></div>
   </div></section>;
 }
@@ -215,5 +230,5 @@ export function Portfolio() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const reduceMotion = useMotionPreference();
-  return <MotionConfig reducedMotion="user"><a href="#main-content" className="skip-link">Skip to content</a><motion.div className="reading-progress" style={{ scaleX: progress }} aria-hidden="true" /><Navigation /><motion.main id="main-content" initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }}><Hero /><Work selected={selectedProject} onSelect={setSelectedProject} /><ExperienceSection /><About /><EducationAndHonors /><Contact /></motion.main></MotionConfig>;
+  return <MotionConfig reducedMotion="user"><a href="#main-content" className="skip-link">Skip to content</a><motion.div className="reading-progress" style={{ scaleX: progress }} aria-hidden="true" /><Navigation /><motion.main id="main-content" initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }}><Hero /><Work selected={selectedProject} onSelect={setSelectedProject} /><ExperienceSection /><About /><SkillsSection /><EducationAndHonors /><Contact /></motion.main></MotionConfig>;
 }
