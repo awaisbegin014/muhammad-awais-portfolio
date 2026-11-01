@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowDownRight, ArrowRight, ArrowUpRight, Check, Copy, Github, GraduationCap, Layers3, Maximize2, Menu, Minus, Plus, X } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Check, CheckCircle2, CircleDot, Copy, Database, FileSearch, Github, GitPullRequest, GraduationCap, Layers3, LockKeyhole, Maximize2, Menu, Minus, Play, Plus, Radio, Search, Send, ShieldCheck, Sparkles, Timer, Trophy, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, MotionConfig, useScroll, useSpring } from "framer-motion";
 import { useMotionPreference } from "@/hooks/useMotionPreference";
@@ -20,14 +20,18 @@ const projectStories = [
     number: "01",
     category: "OPEN SOURCE / COMMUNITY",
     title: "Good projects deserve\na second pair of hands.",
-    intro: "A place for FAST students to publish what they're building, find open issues, and contribute to each other's work.",
+    intro: "A verified FAST community for publishing projects and finding open issues.",
     caption: "A home for student-built software.",
     focus: "End-to-end platform development",
+    systemStyle: "community",
+    systemEyebrow: "CONTRIBUTION LOOP",
+    systemTitle: "An open issue becomes shared credit.",
+    systemStatus: "LIVE ON AWS + VERCEL",
     system: [
-      { name: "Discover", label: "Next.js", text: "Students browse projects and find issues they can contribute to through the Next.js interface." },
-      { name: "Collaborate", label: "Django REST", text: "The Django REST Framework backend supports project publishing, issue workflows, and collaboration." },
-      { name: "Store", label: "PostgreSQL", text: "PostgreSQL stores the platform's project and contribution data, with Redis in the supporting stack." },
-      { name: "Run", label: "Docker", text: "Docker brings the application's services together in a repeatable environment." },
+      { name: "Discover", label: "POSTGRESQL VIEWS", icon: Search, text: "Ranked views surface trending, skill-matched, and open-issue projects." },
+      { name: "Pick an issue", label: "NEXT.JS + DRF", icon: CircleDot, text: "Verified students browse projects and choose an issue through the Next.js and Django stack." },
+      { name: "Ship together", label: "ATOMIC WORKFLOW", icon: GitPullRequest, text: "Closing an issue records every contributor in one atomic operation." },
+      { name: "Earn credit", label: "CONTRIBUTOR RANKING", icon: Trophy, text: "Completed work updates activity stats and contributor rankings." },
     ],
   },
   {
@@ -37,14 +41,18 @@ const projectStories = [
     number: "02",
     category: "PRODUCT / JOB SEARCH",
     title: "The job search,\nwith fewer loose ends.",
-    intro: "Applications, résumé versions, interviews, and reminders. One private workspace to keep the next step in sight.",
+    intro: "Applications, résumé versions, and interviews in one private workspace.",
     caption: "Less spreadsheet juggling. More clarity.",
     focus: "Product development & application workflows",
+    systemStyle: "analysis",
+    systemEyebrow: "PRIVATE EVIDENCE PIPELINE",
+    systemTitle: "A résumé enters. Evidence comes out.",
+    systemStatus: "DETERMINISTIC ATS V3",
     system: [
-      { name: "Organize", label: "ASP.NET MVC", text: "An ASP.NET Core MVC workspace connects applications, interviews, reminders, and résumé versions." },
-      { name: "Evaluate", label: "Match scoring", text: "Explainable ATS and job-match scoring helps compare résumé versions against a job description." },
-      { name: "Persist", label: "EF Core / SQL", text: "Entity Framework Core and SQL Server support the per-user application data and workflows." },
-      { name: "Protect", label: "Private workspace", text: "Secure identity and private file storage keep each user's job-search documents in their own workspace." },
+      { name: "Track", label: "ASP.NET MVC", icon: Database, text: "Each role stays connected to its deadline, interviews, notes, and submitted résumé." },
+      { name: "Inspect", label: "PDFPIG + OPEN XML", icon: FileSearch, text: "Bounded workers extract text and inspect PDF or DOCX structure." },
+      { name: "Score locally", label: "ATS V3 RULE ENGINE", icon: Sparkles, text: "Deterministic rules calculate readiness and job match from real evidence." },
+      { name: "Explain", label: "EVIDENCE REPORT", icon: ShieldCheck, text: "The report shows matched requirements, gaps, confidence, and scoring history." },
     ],
   },
   {
@@ -54,14 +62,19 @@ const projectStories = [
     number: "03",
     category: "COMPETITION / DATA ANALYSIS",
     title: "A little mystery.\nA lot of data.",
-    intro: "An investigative competition platform where participants work through data challenges, submit answers, and follow the leaderboard. I built the platform and designed the questions.",
+    intro: "A live data competition for timed challenges, submissions, and standings.",
     caption: "Built for the people behind the leaderboard.",
     focus: "Platform development & competition design",
+    systemStyle: "realtime",
+    systemEyebrow: "REALTIME COMPETITION CIRCUIT",
+    systemTitle: "One clock. One submission. Live standings.",
+    systemStatus: "SUPABASE REALTIME",
     system: [
-      { name: "Investigate", label: "React", text: "The React interface brings the data-analysis challenges and submission workflow together for participants." },
-      { name: "Submit", label: "Supabase", text: "Supabase supports the platform's data and participant workflows." },
-      { name: "Compete", label: "Scoring", text: "Scoring and participant leaderboards make competition progress visible." },
-      { name: "Manage", label: "Admin tools", text: "An admin dashboard supports question management and competition content, with the site deployed on Vercel." },
+      { name: "Control", label: "ADMIN CONSOLE", icon: Play, text: "Admins publish questions, open rounds, and control timers." },
+      { name: "Investigate", label: "REACT + LOCAL DRAFT", icon: Timer, text: "Teams solve each round while answers save locally." },
+      { name: "Submit once", label: "VERCEL API", icon: Send, text: "The server verifies the team before accepting one final submission." },
+      { name: "Score atomically", label: "SUPABASE RPC", icon: CheckCircle2, text: "One transaction validates timing, scores answers, and updates standings." },
+      { name: "Broadcast", label: "REALTIME CHANNEL", icon: Radio, text: "Realtime events refresh every connected leaderboard." },
     ],
   },
 ];
@@ -125,6 +138,48 @@ function Hero() {
   </section>;
 }
 
+function SystemPreview({ story, step, onStepChange }: { story: Story; step: number; onStepChange: (index: number) => void }) {
+  const activeNode = story.system[step];
+  const ActiveIcon = activeNode.icon;
+
+  const nodeButton = (node: Story["system"][number], index: number, className = "") => {
+    const Icon = node.icon;
+    return <button key={node.name} type="button" className={`${className}${step === index ? " active" : ""}`} aria-pressed={step === index} onClick={() => onStepChange(index)}>
+      <span className="system-node-icon"><Icon size={16} strokeWidth={1.8} /></span>
+      <span className="system-node-copy"><strong>{node.name}</strong><small>{node.label}</small></span>
+      <span className="system-node-index">0{index + 1}</span>
+    </button>;
+  };
+
+  return <div className={`system-preview system-${story.systemStyle}`}>
+    <div className="system-topline"><span>{story.systemEyebrow}</span><span className="system-live"><i />{story.systemStatus}</span></div>
+    <div className="system-intro"><h4>{story.systemTitle}</h4><div className="system-inline-detail" aria-live="polite"><span className="system-inline-icon"><ActiveIcon size={17} /></span><div><span className="eyebrow">0{step + 1} / {activeNode.label}</span><p>{activeNode.text}</p></div></div></div>
+
+    {story.systemStyle === "community" && <div className="community-map" aria-label="FORKED NUCES contribution loop">
+      <div className="community-orbit" aria-hidden="true"><span>PROJECT</span><strong>Open issue</strong><small>needs a contributor</small></div>
+      <div className="community-route">{story.system.map((node, index) => nodeButton(node, index, `community-stop stop-${index}`))}</div>
+      <span className="community-return" aria-hidden="true">credit improves discovery <ArrowRight size={13} /></span>
+    </div>}
+
+    {story.systemStyle === "analysis" && <div className="analysis-map" aria-label="ApplyWise private analysis pipeline">
+      <div className="analysis-inputs"><span><FileSearch size={14} />Résumé file</span><span><Database size={14} />Job description</span></div>
+      <div className="analysis-merge"><span>PRIVATE, TENANT-SCOPED INPUT</span></div>
+      <div className="analysis-pipeline">{story.system.map((node, index) => <div className="analysis-stage" key={node.name}>{nodeButton(node, index)}{index < story.system.length - 1 && <ArrowRight size={15} className="analysis-arrow" />}</div>)}</div>
+      <div className="analysis-vault"><LockKeyhole size={15} /><strong>Private storage boundary</strong><span>EF Core · SQL Server · files outside the public web root</span></div>
+    </div>}
+
+    {story.systemStyle === "realtime" && <div className="realtime-map" aria-label="Guilty by Data realtime competition circuit">
+      <div className="realtime-admin"><span className="realtime-lane-label">ADMIN LANE</span>{nodeButton(story.system[0], 0)}<span className="admin-signal"><ArrowDownRight size={14} /> opens round</span></div>
+      <div className="realtime-circuit"><span className="realtime-lane-label">TEAM + SERVER LANE</span><div className="realtime-stages">{story.system.slice(1).map((node, offset) => {
+        const index = offset + 1;
+        return <div className="realtime-stage" key={node.name}>{nodeButton(node, index)}{index < story.system.length - 1 && <ArrowRight size={14} className="realtime-arrow" />}</div>;
+      })}</div></div>
+      <div className="realtime-return"><Radio size={14} /><span>safe database changes stream back to every connected scoreboard</span></div>
+    </div>}
+
+  </div>;
+}
+
 function ProjectStory({ story, project }: { story: Story; project: Project }) {
   const [view, setView] = useState<"interface" | "system">("interface");
   const [step, setStep] = useState(0);
@@ -140,11 +195,7 @@ function ProjectStory({ story, project }: { story: Story; project: Project }) {
     <div className="project-visual">
       <div className="project-viewbar"><div className="view-switch" role="group" aria-label={`${project.name} preview view`}><button aria-pressed={view === "interface"} onClick={() => setView("interface")}>Interface</button><button aria-pressed={view === "system"} onClick={() => setView("system")}><Layers3 size={13} /> Under the hood</button></div></div>
       <motion.div key={view} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }} className={`project-stage${view === "system" ? " system-active" : " screenshot-active"}`}>
-        {view === "interface" ? <a className="project-interface-preview" href={story.screenshot.src} target="_blank" rel="noreferrer" aria-label={`View full-size ${project.name} screenshot`}><Image src={story.screenshot} alt={`${project.name} website interface`} sizes="(max-width: 800px) calc(100vw - 40px), 750px" quality={90} className="project-interface-image" /><span className="screenshot-expand"><Maximize2 size={14} />View full size</span></a> : <div className="system-preview">
-          <h4>How it works.</h4><p className="system-instruction">Select a stage to explore.</p>
-          <div className="system-nodes">{story.system.map((node, index) => <button key={node.name} onClick={() => setStep(index)} aria-pressed={step === index} className={step === index ? "active" : ""}><span className="node-number">0{index + 1}</span><strong>{node.name}</strong><span>{node.label}</span>{index < story.system.length - 1 && <ArrowRight className="node-arrow" size={15} />}</button>)}</div>
-          <div className="system-explanation" aria-live="polite"><span className="system-plus">+</span><div><span className="eyebrow">{story.system[step].label}</span><p>{story.system[step].text}</p></div></div>
-        </div>}
+        {view === "interface" ? <a className="project-interface-preview" href={story.screenshot.src} target="_blank" rel="noreferrer" aria-label={`View full-size ${project.name} screenshot`}><Image src={story.screenshot} alt={`${project.name} website interface`} sizes="(max-width: 800px) calc(100vw - 40px), 750px" quality={90} className="project-interface-image" /><span className="screenshot-expand"><Maximize2 size={14} />View full size</span></a> : <SystemPreview story={story} step={step} onStepChange={setStep} />}
       </motion.div>
     </div>
   </article>;
@@ -159,7 +210,7 @@ function Work({ selected, onSelect }: { selected: number; onSelect: (index: numb
       <Reveal className="section-heading"><div><span className="eyebrow section-label">01 / SELECTED WORK</span><h2 className="page-heading">Made to be <em>used.</em></h2></div></Reveal>
       <div className="project-picker" role="group" aria-label="Choose a project">{projectStories.map((item, index) => <button key={item.slug} aria-pressed={selected === index} aria-controls="selected-project" onClick={() => onSelect(index)}><span>{item.number}</span>{item.name}<ArrowUpRight size={15} /></button>)}</div>
       <div className="project-list" id="selected-project"><AnimatePresence mode="wait" initial={false}><motion.div key={story.slug} initial={reduceMotion ? false : { opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -12 }} transition={{ duration: 0.22 }}><ProjectStory story={story} project={projects.find(project => project.name === story.name)!} /></motion.div></AnimatePresence></div>
-      <a className="more-project" href={investment.github} target="_blank" rel="noreferrer"><div className="more-project-icon"><span /><span /><span /><span /><span /></div><div><span className="eyebrow">ALSO ON THE BENCH / PYTHON & MACHINE LEARNING</span><h3>Investment Recommendation System</h3><p>Collaborative SVD, content-based signals, and risk profiles. Brought together in Streamlit.</p></div><ArrowUpRight size={27} className="more-project-arrow" /><span className="sr-only">View GitHub repository</span></a>
+      <a className="more-project" href={investment.github} target="_blank" rel="noreferrer"><div className="more-project-icon"><span /><span /><span /><span /><span /></div><div><span className="eyebrow">PYTHON & MACHINE LEARNING</span><h3>Investment Recommendation System</h3><p>Personalized recommendations built in Streamlit.</p></div><ArrowUpRight size={27} className="more-project-arrow" /><span className="sr-only">View GitHub repository</span></a>
     </div>
   </section>;
 }
@@ -169,12 +220,12 @@ function ExperienceList({ start, end }: { start: number; end?: number }) {
 }
 
 function ExperienceSection() {
-  return <section id="experience" className="experience-chapters"><div className="experience-section screen-panel page-width"><Reveal><div className="section-heading"><div><span className="eyebrow section-label">02 / EXPERIENCE</span><h2 className="page-heading">Where I’ve<br /><em>put in the work.</em></h2></div><p>Client work, internal tools, and<br className="desktop-break" /> a few good teams along the way.</p></div><ExperienceList start={0} end={3} /></Reveal></div><div className="community-section screen-panel page-width"><Reveal><div className="section-heading"><div><span className="eyebrow section-label">02.1 / COMMUNITY</span><h2>Built together.<br /><em>Learned together.</em></h2></div><p>Competitions, student platforms,<br className="desktop-break" /> and hands-on workshops.</p></div><ExperienceList start={3} /></Reveal></div></section>;
+  return <section id="experience" className="experience-chapters"><div className="experience-section screen-panel page-width"><Reveal><div className="section-heading"><div><span className="eyebrow section-label">02 / EXPERIENCE</span><h2 className="page-heading">Where I’ve<br /><em>put in the work.</em></h2></div><p>Products, platforms, and teams.</p></div><ExperienceList start={0} end={3} /></Reveal></div><div className="community-section screen-panel page-width"><Reveal><div className="section-heading"><div><span className="eyebrow section-label">02.1 / COMMUNITY</span><h2>Built together.<br /><em>Learned together.</em></h2></div><p>Competitions, workshops, and open source.</p></div><ExperienceList start={3} /></Reveal></div></section>;
 }
 
 function About() {
   return <section id="about" className="about-section"><div className="about-intro-section screen-panel page-width"><Reveal>
-    <div className="about-top"><div><span className="eyebrow section-label">03 / ABOUT</span><h2 className="page-heading">A little<br /><em>background.</em></h2></div><div className="about-copy"><p>I’m finishing my Computer Science degree at FAST–NUCES in Karachi, with graduation expected in 2027.</p><p>Alongside development work, I’ve designed data-analysis challenges, organized student competitions, and led Git and GitHub workshops. Building for those events meant thinking about participants, organizers, and the workflows connecting them.</p><a href="/resume.pdf" target="_blank" rel="noreferrer" className="text-link">View résumé <ArrowUpRight size={17} /></a></div></div>
+    <div className="about-top"><div><span className="eyebrow section-label">03 / ABOUT</span><h2 className="page-heading">A little<br /><em>background.</em></h2></div><div className="about-copy"><p>Computer Science student at FAST–NUCES, graduating in 2027.</p><p>I build full-stack products and community platforms with clear, useful workflows.</p><a href="/resume.pdf" target="_blank" rel="noreferrer" className="text-link">View résumé <ArrowUpRight size={17} /></a></div></div>
     </Reveal></div></section>;
 }
 
@@ -219,7 +270,7 @@ function Contact() {
   }
   return <section id="contact" className="contact-section"><div className="page-width">
     <div className="contact-top"><span className="eyebrow section-label">06 / CONTACT</span></div>
-    <Reveal className="contact-layout"><div><h2><a className="contact-headline" href="#contact-name">Have something<br />in <em>mind?</em><ArrowUpRight aria-hidden="true" /></a></h2><p className="contact-invitation">Tell me about your project or the role you’re hiring for.</p></div><ContactForm /></Reveal>
+    <Reveal className="contact-layout"><div><h2><a className="contact-headline" href="#contact-name">Have something<br />in <em>mind?</em><ArrowUpRight aria-hidden="true" /></a></h2></div><ContactForm /></Reveal>
     <div className="contact-bottom"><div className="email-group"><a href={gmailComposeUrl({ to: owner.email })} target="_blank" rel="noopener noreferrer" aria-label={`Email ${owner.email} using Gmail`}>{owner.email}</a><button onClick={copyEmail} aria-label={copied ? "Email copied" : "Copy email address"}>{copied ? <Check size={17} /> : <Copy size={17} />}</button><span role="status" className="copy-status">{copied ? "Copied!" : ""}</span></div><div className="social-links"><a href={owner.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a><a href={owner.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={15} /></a><a href="tel:+923272726270">Call <ArrowUpRight size={15} /></a></div></div>
     <div className="footer-baseline"><span>© {new Date().getFullYear()} Muhammad Awais</span><a href="#main-content">BACK TO TOP <ArrowUpRight size={13} /></a></div>
   </div></section>;

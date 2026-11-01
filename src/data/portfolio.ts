@@ -239,6 +239,7 @@ export const projects: Project[] = [
     tech: ["React.js", "Supabase", "Vercel"],
     featured: true,
     live: "https://guilty-by-data.vercel.app/",
+    github: "https://github.com/codexbegin14/Guilty-by-Data",
     description: [
       "Designed data-analysis questions and built the competition platform for participants to access challenges and submit solutions.",
       "Implemented scoring, participant leaderboards, and an admin dashboard to manage questions and competition content.",
