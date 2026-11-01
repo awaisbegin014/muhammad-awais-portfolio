@@ -75,6 +75,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```bash
 npm run dev
 npm run lint
+npm run test:contact
 npm run build
 npm run start
 ```
@@ -116,18 +117,22 @@ The main page components are in `src/components/Portfolio.tsx`. Typography and s
 
 ## Email delivery
 
-Without server credentials, the contact form uses Gmail on the web. The visitor completes the fields and chooses **Continue in Gmail**, which opens a new tab with the recipient, subject, name, email, and message filled in. The visitor reviews the message and clicks **Send** in Gmail; Gmail may ask them to sign in first. This does not invoke Outlook or the device's default email app. Opening Gmail does not claim the email was sent. A visible compose link remains available if the browser blocks the new tab.
+Visitors fill in the contact form and click **Send email**. The form posts to `POST /api/contact`, which sends the email through Resend on the server. Visitors stay on the portfolio and do not need Gmail, an email app, or a Resend account. The button shows a sending state, and the form clears only after the provider accepts the email. Errors preserve the visitor's message and allow another attempt.
 
 For direct server-side email delivery:
 
-1. Copy `.env.example` to `.env.local`.
-2. Set `RESEND_API_KEY` to your own Resend API key.
-3. Set `CONTACT_FROM_EMAIL` to a sender address on a verified domain in your Resend account.
-4. Restart the development server. For deployment, add the same variables to your hosting environment.
+1. Create a [Resend API key](https://resend.com/api-keys) and [verify your sending domain](https://resend.com/domains).
+2. For local development, copy `.env.example` to `.env.local` and fill in `RESEND_API_KEY` and `CONTACT_FROM_EMAIL`.
+3. Set `CONTACT_FROM_EMAIL` to a sender on that verified domain, for example `Muhammad Awais Portfolio <contact@your-verified-domain.com>`. Do not use the visitor's address or your Gmail inbox as this sender.
+4. Restart the development server after setting these variables.
+5. For Vercel, open the project's **Settings → Environment Variables**, add both values for the environments you use (Production and, if needed, Preview), then redeploy. Local `.env.local` values are not automatically available in production.
+6. Submit a message from the deployed form and check `awaisshaikhcs786@gmail.com`, including Spam, to confirm delivery. Provider acceptance alone cannot guarantee inbox placement.
 
-The form detects readiness through `GET /api/contact` and switches to direct sending automatically. The API only sends to `awaisshaikhcs786@gmail.com`, uses the visitor's address for replies, validates inputs, limits message length, rejects cross-origin browser submissions and honeypot values, and applies best-effort in-memory throttling per server instance. For larger traffic, use a shared distributed rate limiter. Credentials stay on the server.
+The form always submits directly to the server. `GET /api/contact` remains available as a configuration readiness check; `directDelivery: true` means both server variables are present, not that their credentials or deliverability have been verified. Missing configuration returns HTTP 503 with an honest error and never opens Gmail or claims success. Server logs identify missing configuration and provider rejection status without exposing credentials or message contents.
 
-The provider request follows the [Resend send-email API](https://resend.com/docs/api-reference/emails/send-email). Without configured credentials, direct delivery returns an explicit unavailable response. Delivery errors preserve the form and offer a prefilled Gmail compose link. All portfolio email links open Gmail explicitly. They use a shared URL builder in `src/lib/email.ts` so special characters and line breaks are encoded correctly.
+The API only sends to `awaisshaikhcs786@gmail.com`, uses the visitor's address for replies, validates inputs, limits message length, rejects cross-origin browser submissions and honeypot values, and applies best-effort in-memory throttling per server instance. For larger traffic, use a shared distributed rate limiter. Credentials stay on the server and must never use a `NEXT_PUBLIC_` prefix or be committed to Git.
+
+The provider request follows the [Resend send-email API](https://resend.com/docs/api-reference/emails/send-email). The separate email-address links still offer Gmail compose through `src/lib/email.ts`; the contact form never uses them.
 
 ### Editing content
 

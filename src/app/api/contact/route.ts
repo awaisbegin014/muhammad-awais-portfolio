@@ -7,7 +7,7 @@ const attempts = new Map<string, { count: number; expires: number }>();
 const recipient = "awaisshaikhcs786@gmail.com";
 
 export async function GET() {
-  return NextResponse.json({ directDelivery: Boolean(process.env.RESEND_API_KEY && process.env.CONTACT_FROM_EMAIL) }, { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json({ directDelivery: Boolean(process.env.RESEND_API_KEY?.trim() && process.env.CONTACT_FROM_EMAIL?.trim()) }, { headers: { "Cache-Control": "no-store" } });
 }
 
 export async function POST(request: Request) {
@@ -48,10 +48,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please check your name, email, subject, and message length." }, { status: 400 });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const from = process.env.CONTACT_FROM_EMAIL?.trim();
   if (!apiKey || !from) {
-    return NextResponse.json({ error: "Direct delivery is unavailable. Please continue in Gmail instead." }, { status: 503 });
+    console.error("Contact email is not configured: set RESEND_API_KEY and CONTACT_FROM_EMAIL on the server.");
+    return NextResponse.json({ error: "Email delivery is temporarily unavailable. Your message has not been sent. Please try again later." }, { status: 503 });
   }
 
   // Best-effort per-instance throttling. A distributed limiter can be added for high traffic.
@@ -81,11 +82,12 @@ export async function POST(request: Request) {
       signal: AbortSignal.timeout(10000),
     });
     const result = await response.json();
-    if (!response.ok || typeof result.id !== "string") {
-      return NextResponse.json({ error: "Your message could not be sent. Try again or continue in Gmail instead." }, { status: 502 });
+    if (!response.ok || typeof result?.id !== "string" || !result.id) {
+      console.error("Contact email provider rejected delivery", { status: response.status });
+      return NextResponse.json({ error: "Your message could not be sent. Please try again shortly." }, { status: 502 });
     }
     return NextResponse.json({ sent: true });
   } catch {
-    return NextResponse.json({ error: "Email delivery is temporarily unavailable. Please continue in Gmail instead." }, { status: 502 });
+    return NextResponse.json({ error: "Email delivery could not be confirmed. Please wait a moment before trying again." }, { status: 502 });
   }
 }
